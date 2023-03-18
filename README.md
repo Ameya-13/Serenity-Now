@@ -1,1 +1,3 @@
-# Make sure to put your own api key in the views.py section in the Bot folder
+# Welcome to Serenity Now!
+
+## Serenity Now is your best friend that you can always talk to for your mental health questions!

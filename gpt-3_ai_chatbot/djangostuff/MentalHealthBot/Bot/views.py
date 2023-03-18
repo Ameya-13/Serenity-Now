@@ -14,7 +14,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 
-API_KEY = "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"
+API_KEY = "enter your openai api key here"
 openai.api_key = API_KEY
 
 @csrf_exempt

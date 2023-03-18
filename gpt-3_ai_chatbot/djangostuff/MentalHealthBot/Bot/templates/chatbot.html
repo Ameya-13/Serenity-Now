@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Mental Health Chatbot</title>
+    <link rel="stylesheet" href="{% static 'Bot/style.css' %}" />
+  </head>
+  <body>
+    <div class="chatbot-container">
+      <div class="chat-header">
+        <h1>Serenity Now</h1>
+      </div>
+      <div class="chat-area" id="chatlog"></div>
+	  <div class="input-area">
+		<hr>
+		<input type="text" id="user-input" placeholder="Type your message here" />
+		<button id="send-button">Send</button>
+      </div>
+    </div>
+    <script>
+    var chatlog = document.getElementById('chatlog');
+      var userInput = document.getElementById('user-input');
+      var sendButton = document.getElementById('send-button');
+
+      function sendMessage() {
+          var message = userInput.value;
+
+          fetch('{% url "chatbot" %}', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded'
+              },
+              body: 'message=' + encodeURIComponent(message)
+          })
+          .then(function(response) {
+              return response.json();
+          })
+          .then(function(data) {
+              chatlog.innerHTML += '<p>You: ' + data.user_input + '</p>';
+              chatlog.innerHTML += '<p>Serenity Now: ' + data.bot_response + '</p>';
+              userInput.value = '';
+          });
+      }
+
+      sendButton.addEventListener('click', function(event) {
+          sendMessage();
+      });
+
+      userInput.addEventListener('keyup', function(event) {
+          if (event.key === 'Enter') {
+              sendMessage();
+          }
+      });
+      </script>
+  </body>
+</html>

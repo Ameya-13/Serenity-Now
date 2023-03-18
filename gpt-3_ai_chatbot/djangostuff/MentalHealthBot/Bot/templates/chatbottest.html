@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mental Health Bot</title>
+</head>
+<body>
+    <h1>Mental Health Bot</h1>
+    <div id="chatlog"></div>
+    <input id="user-input" type="text">
+    <button id="send-button">Send</button>
+    <script>
+        var chatlog = document.getElementById('chatlog');
+        var userInput = document.getElementById('user-input');
+        var sendButton = document.getElementById('send-button');
+
+        function sendMessage() {
+            var message = userInput.value;
+
+            fetch('{% url "chatbot" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'message=' + encodeURIComponent(message)
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                chatlog.innerHTML += '<p>User: ' + data.user_input + '</p>';
+                chatlog.innerHTML += '<p>Bot: ' + data.bot_response + '</p>';
+                userInput.value = '';
+            });
+        }
+
+        sendButton.addEventListener('click', function(event) {
+            sendMessage();
+        });
+
+        userInput.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
